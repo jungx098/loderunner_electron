@@ -1,0 +1,3 @@
+[submodule "LodeRunner_TotalRecall"]
+	path = LodeRunner_TotalRecall
+	url = https://github.com/jungx098/LodeRunner_TotalRecall.git
