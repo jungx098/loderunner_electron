@@ -11,7 +11,15 @@ Update `package.json` by running:
 npm init -y
 ```
 
-## Running Locally
+## Dependencies
+
+Install required packages:
+
+```sh
+npm install
+```
+
+## Running
 
 Run the Electron app:
 

@@ -1,7 +1,7 @@
 {
   "name": "loderunner_electron",
   "version": "1.0.0",
-  "description": "",
+  "description": "An Electron wrapper for the Lode Runner Total Recall project (https://github.com/jungx098/LodeRunner_TotalRecall).",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -107,5 +107,13 @@
     "universalify": "^0.1.2",
     "wrappy": "^1.0.2",
     "yauzl": "^2.10.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jungx098/loderunner_electron.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jungx098/loderunner_electron/issues"
+  },
+  "homepage": "https://github.com/jungx098/loderunner_electron#readme"
 }
