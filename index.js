@@ -41,11 +41,24 @@ function createWindow() {
         width: bounds.width,
         height: bounds.height,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            contextIsolation: false
         }
     })
 
-    win.loadFile('LodeRunner_TotalRecall/lodeRunner.html')
+    // Use path.join to ensure correct path resolution in packaged app
+    const htmlPath = path.join(__dirname, 'LodeRunner_TotalRecall', 'lodeRunner.html')
+    console.log('App is packaged:', app.isPackaged)
+    console.log('__dirname:', __dirname)
+    console.log('Loading HTML from:', htmlPath)
+    console.log('File exists:', fs.existsSync(htmlPath))
+
+    win.loadFile(htmlPath).catch(err => {
+        console.error('Error loading HTML file:', err)
+    })
+
+    // Open DevTools for debugging (including in production to debug CI builds)
+    win.webContents.openDevTools()
 
     // Save window bounds when resized or moved
     win.on('resize', saveWindowBounds)
