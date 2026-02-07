@@ -41,7 +41,10 @@
     }
   },
   "keywords": [],
-  "author": "",
+  "author": {
+    "name": "jungx098",
+    "email": "jungx098@gmail.com"
+  },
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
