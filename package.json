@@ -12,15 +12,8 @@
   "build": {
     "appId": "com.jungx098.loderunner",
     "productName": "LodeRunner",
-    "asar": false,
     "files": [
-      "index.js",
-      "package.json",
-      "LodeRunner_TotalRecall/**/*",
-      "!LodeRunner_TotalRecall/tools/**",
-      "!LodeRunner_TotalRecall/README.md",
-      "!**/*.md",
-      "!.git/**"
+      "**/*"
     ],
     "directories": {
       "buildResources": "assets",
