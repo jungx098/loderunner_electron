@@ -32,8 +32,7 @@ jobs:
       run: npm ci
 
     - name: Run tests
-      run: npm test
-      continue-on-error: true  # Since test is not implemented yet
+      run: npm test --if-present
 
   build:
     name: Build on ${{ matrix.os }}
