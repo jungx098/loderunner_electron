@@ -1,6 +1,6 @@
 {
   "name": "loderunner_electron",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "An Electron wrapper for the Lode Runner Total Recall project (https://github.com/jungx098/LodeRunner_TotalRecall).",
   "main": "index.js",
   "scripts": {
