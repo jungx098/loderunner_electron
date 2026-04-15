@@ -1,42 +1,49 @@
 # Lode Runner Electron
 
-An Electron wrapper for the Lode Runner Total Recall project (https://github.com/jungx098/LodeRunner_TotalRecall).
+An [Electron](https://www.electronjs.org/) wrapper for [Lode Runner Total Recall](https://github.com/jungx098/LodeRunner_TotalRecall).
 
+## Requirements
 
-## Configuration
+- [Node.js](https://nodejs.org/) 18.x or 20.x (matches CI)
 
-Update `package.json` by running:
-
-```sh
-npm init -y
-```
-
-## Dependencies
-
-Install required packages:
+## Install
 
 ```sh
 npm install
 ```
 
-## Running
-
-Run the Electron app:
+## Run
 
 ```sh
-npm run start
+npm start
 ```
 
-## Packaging
+## Build
 
-Build the application for your local platform:
+Package the app for your current platform (output under `dist/`):
 
 ```sh
 npm run build
 ```
 
-Build for MacOS, Windows, and Linux:
+Build for macOS, Windows, and Linux in one go:
 
 ```sh
 npm run build:all
 ```
+
+## Tests
+
+```sh
+npm test
+```
+
+The test script is still a placeholder; CI runs it with `continue-on-error` until real tests exist.
+
+## Continuous integration
+
+[GitHub Actions](https://docs.github.com/en/actions) workflow **Build and Test** (`.github/workflows/build-test.yml`):
+
+- **Triggers:** pushes and pull requests to `main`, `master`, `develop`, or `ci`.
+- **Test job:** `npm install` and `npm test` on Ubuntu, Windows, and macOS, with Node 18.x and 20.x.
+- **Build job:** after tests, `npm run build` per platform (`--linux`, `--win`, `--mac`) with `--publish never`, then uploads `dist/*` as workflow artifacts (7-day retention).
