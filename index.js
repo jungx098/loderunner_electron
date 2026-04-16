@@ -45,7 +45,10 @@ function createWindow() {
         width: state.width,
         height: state.height,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            // loadFile(..., { query }) does not always surface ?sf= on file:// URLs in the
+            // renderer; additionalArguments is reliable for startup fullscreen detection.
+            additionalArguments: state.isFullScreen ? ['--lode-runner-start-fullscreen'] : []
         }
     })
 
@@ -57,7 +60,12 @@ function createWindow() {
         win.setFullScreen(true)
     }
 
-    win.loadFile('LodeRunner_TotalRecall/lodeRunner.html')
+    // Query flags let the renderer size the canvas to the target display on first paint.
+    // On macOS, window.innerWidth/Height can still reflect the pre-fullscreen window when
+    // init() runs, so startup would letterbox until a later resize.
+    win.loadFile('LodeRunner_TotalRecall/lodeRunner.html', {
+        query: { sf: state.isFullScreen ? '1' : '0' }
+    })
 
     // Save window state when resized, moved, maximized, or fullscreen changed
     win.on('resize', saveWindowState)
