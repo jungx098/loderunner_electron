@@ -38,6 +38,10 @@
         "deb"
       ],
       "icon": "assets/icon.512.png"
+    },
+    "publish": {
+      "provider": "github",
+      "releaseType": "release"
     }
   },
   "keywords": [],
