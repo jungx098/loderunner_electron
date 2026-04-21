@@ -1,11 +1,12 @@
 {
   "name": "loderunner_electron",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "An Electron wrapper for the Lode Runner Total Recall project (https://github.com/jungx098/LodeRunner_TotalRecall).",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
+    "debug": "LODERUNNER_DEBUG=1 electron . --inspect",
     "build": "electron-builder",
     "build:all": "electron-builder --mac --win --linux"
   },

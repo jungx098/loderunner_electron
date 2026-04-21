@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, Menu } = require('electron')
 const path = require('path')
 const fs = require('fs')
 
@@ -35,6 +35,72 @@ function saveWindowState() {
     }
 }
 
+function createApplicationMenu() {
+    const editSubmenu = [
+        { role: 'undo' },
+        { role: 'redo' },
+        { type: 'separator' },
+        { role: 'cut' },
+        { role: 'copy' },
+        { role: 'paste' },
+        { role: 'selectAll' }
+    ]
+
+    if (process.platform === 'darwin') {
+        const template = [
+            {
+                label: app.name,
+                submenu: [
+                    { role: 'about' },
+                    { type: 'separator' },
+                    { role: 'services' },
+                    { type: 'separator' },
+                    { role: 'hide' },
+                    { role: 'hideOthers' },
+                    { role: 'unhide' },
+                    { type: 'separator' },
+                    { role: 'quit' }
+                ]
+            },
+            { label: 'Edit', submenu: editSubmenu },
+            {
+                label: 'Window',
+                submenu: [
+                    { role: 'minimize' },
+                    { role: 'zoom' },
+                    { type: 'separator' },
+                    { role: 'front' }
+                ]
+            }
+        ]
+        Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+        return
+    }
+
+    // Windows / Linux: File → Quit with Ctrl+Q (macOS uses the app menu for ⌘Q)
+    const template = [
+        {
+            label: 'File',
+            submenu: [
+                {
+                    label: 'Quit',
+                    accelerator: 'Ctrl+Q',
+                    click: () => app.quit()
+                }
+            ]
+        },
+        { label: 'Edit', submenu: editSubmenu },
+        {
+            label: 'Window',
+            submenu: [
+                { role: 'minimize' },
+                { role: 'close' }
+            ]
+        }
+    ]
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+}
+
 // function createWindow
 function createWindow() {
     const state = loadWindowState()
@@ -49,6 +115,21 @@ function createWindow() {
             // loadFile(..., { query }) does not always surface ?sf= on file:// URLs in the
             // renderer; additionalArguments is reliable for startup fullscreen detection.
             additionalArguments: state.isFullScreen ? ['--lode-runner-start-fullscreen'] : []
+        }
+    })
+
+    // Quit shortcuts must not reach the game: handleKeyDown treats Q as "dig left" and
+    // returns false, which blocks default handling and breaks Cmd+Q / Ctrl+Q to quit.
+    win.webContents.on('before-input-event', (event, input) => {
+        if (input.type !== 'keyDown') return
+        const key = typeof input.key === 'string' ? input.key.toLowerCase() : ''
+        if (key !== 'q') return
+        const quit =
+            input.meta ||
+            (process.platform !== 'darwin' && input.control)
+        if (quit) {
+            event.preventDefault()
+            app.quit()
         }
     })
 
@@ -67,6 +148,12 @@ function createWindow() {
         query: { sf: state.isFullScreen ? '1' : '0' }
     })
 
+    if (process.env.LODERUNNER_DEBUG === '1') {
+        win.webContents.once('did-finish-load', () => {
+            win.webContents.openDevTools()
+        })
+    }
+
     // Save window state when resized, moved, maximized, or fullscreen changed
     win.on('resize', saveWindowState)
     win.on('move', saveWindowState)
@@ -80,4 +167,7 @@ function createWindow() {
     })
 }
 
-app.on('ready', createWindow)
+app.on('ready', () => {
+    createApplicationMenu()
+    createWindow()
+})
